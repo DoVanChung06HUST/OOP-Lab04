@@ -1,53 +1,66 @@
-# OOP - Bài 04: Hệ thống tính lương và thưởng nhân sự
+# OOP – Bài 04: Hệ thống tính lương và thưởng nhân sự
 
-**Đỗ Văn Chung - 202418855 - Lớp học phần 174373**
+**Họ tên:** Đỗ Văn Chung  
+**Mã sinh viên:** 202418855  
+**Lớp học phần:** 174373  
+**Ngôn ngữ:** C# – .NET 10
 
-## Chạy chương trình
-Cần .NET SDK 8 hoặc SDK mới hơn có hỗ trợ target .NET 8. Mở terminal tại thư mục gốc:
+## Nội dung
+
+Chương trình tính lương và thưởng cho ba loại nhân sự:
+- Nhân viên hưởng lương cố định.
+- Nhân viên hưởng lương theo giờ.
+- Nhân viên kinh doanh hưởng lương cơ bản và hoa hồng.
+
+Hỗ trợ quản lý bảng lương, tìm nhân sự, tính tổng thu nhập toàn bộ/theo phòng ban và tìm người có thu nhập cao nhất.
+
+## Cấu trúc mã nguồn
+
+| Tệp | Nội dung |
+|---|---|
+| Employee.cs | Lớp cơ sở trừu tượng, thông tin chung và ba phương thức cộng thưởng nạp chồng. |
+| SalariedEmployee.cs | Nhân viên lương cố định. |
+| HourlyEmployee.cs | Nhân viên theo giờ, tính tiền làm thêm. |
+| SalesEmployee.cs | Nhân viên kinh doanh và cập nhật doanh số. |
+| Payroll.cs | Quản lý danh sách và tổng hợp bảng lương. |
+| Program.cs | Chương trình chạy dữ liệu mẫu. |
+| PayrollTests.cs | Bộ kiểm thử gồm 20 nhóm. |
+| OopLab04.csproj | Cấu hình Console project, target .NET 10. |
+
+## Cách chạy
+
+Cài .NET SDK 10, tải hoặc clone repository rồi mở terminal tại thư mục chứa `OopLab04.csproj`.
+
+Chạy chương trình:
 
 ```bash
-dotnet run --project source/OopLab04.csproj
-dotnet run --project source/OopLab04.csproj -- --test
+dotnet run --project OopLab04.csproj
 ```
 
-Bộ kiểm thử có 20 nhóm (TC01–TC20), in PASS/FAIL và trả exit code 1 khi có lỗi.
-Bản này chưa được biên dịch/chạy C# trong môi trường soạn thảo do chưa có .NET SDK.
-Các con số trong báo cáo được ghi là **kết quả mong đợi**, không phải log thực thi.
-Sau khi chạy trên máy, có thể ghi kết quả thực tế:
+Chạy kiểm thử:
 
 ```bash
-dotnet run --project source/OopLab04.csproj > demo-output.txt
-dotnet run --project source/OopLab04.csproj -- --test > test-output.txt
+dotnet run --project OopLab04.csproj -- --test
 ```
 
-## Cấu trúc
-- `source/`: 5 lớp nghiệp vụ, Program, PayrollTests và project C#.
-- `report/202418855_DoVanChung_Lab04.tex`: báo cáo có sơ đồ TikZ, không cần ảnh ngoài.
-- `report/202418855_DoVanChung_Lab04.pdf`: bản PDF tương ứng.
+## Kết quả thực thi
 
-## Biên dịch báo cáo
-Dùng XeLaTeX, có font DejaVu Serif, DejaVu Sans Mono và gói TikZ.
+Chương trình đã chạy thành công trên Windows bằng terminal trong VS Code.
 
-```bash
-cd report
-xelatex 202418855_DoVanChung_Lab04.tex
-xelatex 202418855_DoVanChung_Lab04.tex
-```
+| Nhân sự | Thu nhập (VND) |
+|---|---:|
+| E001 – Nguyễn Minh An | 18.000.000 |
+| E002 – Trần Thu Bình | 15.500.000 |
+| E003 – Lê Hoàng Chi | 17.500.000 |
+| E004 – Phạm Quốc Dũng | 19.000.000 |
 
-Sửa lệnh `\newcommand{\GithubURL}{}` đầu file LaTeX thành URL repository của bạn,
-ví dụ `\newcommand{\GithubURL}{https://github.com/TEN-TAI-KHOAN/TEN-REPO}`.
-Báo cáo tự chuyển từ dòng chờ bổ sung sang liên kết bấm được.
-Sau khi chạy bộ kiểm thử, cập nhật mục trạng thái kiểm chứng và bảng kết quả thực tế.
+- Tổng bảng lương: **70.000.000 VND**.
+- Tổng phòng Hỗ trợ: **33.000.000 VND**.
+- Thu nhập cao nhất: **E004 – Phạm Quốc Dũng**.
+- Bộ kiểm thử: **20 PASS, 0 FAIL**.
 
-## Các lựa chọn thiết kế
-Dùng `decimal`, Employee trừu tượng, constructor ủy quyền, ba overload `addBonus`,
-`List<Employee>` và các lời gọi đa hình. Chỉ lưu tổng thưởng; reason được kiểm tra
-nhưng không lưu. Không lưu tiền làm thêm vì có thể tính từ số giờ và đơn giá.
-Mã nhân sự/phòng ban so sánh không phân biệt hoa thường, chuỗi được cắt khoảng trắng.
-Payroll là bảng lương đang xử lý, không phải bản chụp lịch sử: sửa đối tượng nhân sự
-sẽ ảnh hưởng các Payroll đang giữ cùng tham chiếu. Không dùng chung các đối tượng
-còn thay đổi để lưu nhiều kỳ đã chốt; cần tạo snapshot nếu mở rộng nghiệp vụ.
+## Thiết kế
 
-## Đưa lên GitHub
-Tạo repository trống; tải toàn bộ thư mục này lên (không tải bin/obj).
-Không có thư viện NuGet ngoài và không có thông tin bí mật trong mã nguồn.
+Chương trình vận dụng đóng gói, constructor ủy quyền, nạp chồng phương thức, kế thừa, ghi đè, đa hình và kết tập.
+
+Dùng `decimal` cho tiền và `List<Employee>` để tổng hợp bằng lời gọi đa hình. Chỉ lưu tổng thưởng; tiền làm thêm được tính từ số giờ và đơn giá. Bảng lương giữ tham chiếu đến nhân sự; việc lưu lịch sử kỳ đã chốt nằm ngoài phạm vi bài tập.
